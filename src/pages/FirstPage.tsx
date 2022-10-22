@@ -53,26 +53,27 @@ export default function FirstPage(): JSX.Element {
 
     return (
         <>
-        { loading ?
-            <p>Loading...</p>
-        :
-            <div className="w-[800px] h-full mt-10 border-2 border-gray-400 border-solid rounded-3xl flex flex-col mx-auto">
-                { products.map(el => <ProductsDisplay productData={el} key={el.id} />) }
-                <div className="flex items-center h-[35px] ">
-                    <div className="flex ml-[165px]">
-                        <p className="font-bold mr-2">Select color</p>
-                        <button
-                            className={btnClass.join(' ')}
-                            onClick={whiteBtnHandler}
-                        ></button>
-                        <button
-                            className={btn2Class.join(' ')}
-                            onClick={blackBtnHandler}
-                        ></button>
+            {error && <p className="text-center text-red-900">{error}</p>}
+            { loading ?
+                <p className="text-center font-bold">Loading...</p>
+            :
+                <div className="w-[800px] h-full mt-10 border-2 border-gray-400 border-solid rounded-3xl flex flex-col mx-auto">
+                    { products.map(el => <ProductsDisplay productData={el} key={el.id} />) }
+                    <div className="flex items-center h-[35px] ">
+                        <div className="flex ml-[165px]">
+                            <p className="font-bold mr-2">Select color</p>
+                            <button
+                                className={btnClass.join(' ')}
+                                onClick={whiteBtnHandler}
+                            ></button>
+                            <button
+                                className={btn2Class.join(' ')}
+                                onClick={blackBtnHandler}
+                            ></button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
         </>
     );
 };

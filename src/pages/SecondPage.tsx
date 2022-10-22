@@ -1,9 +1,37 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import axios, {AxiosError} from "axios";
+import {IProducts} from "../moduls/modules";
+import ProductBonusOption from "../components/ProductBonusOption";
 
 export default function SecondPage() {
+    const [error, setError] = useState<string>("")
+    const [loading, setLoading] = useState<boolean>(false)
+    const [products, setProducts] = useState<IProducts[]>([])
+
+    async function fetchProducts() {
+        try {
+            setError('')
+            setLoading(true)
+            const response = await axios.get<IProducts[]>('https://fakestoreapi.com/products?limit=5')
+            setProducts(response.data)
+            console.log(response.data)
+            setLoading(false)
+        } catch (e: unknown) {
+            const error = e as AxiosError;
+            setLoading(false)
+            setError(error.message)
+        }
+    }
+
+    useEffect(() => {
+        fetchProducts()
+    }, [])
+
+
+
     return (
-        <div>
-            Second Page
+        <div className="flex flex-col border-2 border-gray-400 border-solid rounded-3xl ">
+            {products.map(el => <ProductBonusOption key={el.id} productData={el}>{el.id}</ProductBonusOption>)}
         </div>
     );
 };
