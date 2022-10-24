@@ -5,9 +5,8 @@ import {IProducts} from "../moduls/modules";
 import axios from "axios";
 
 export default function Cart(): JSX.Element {
-    const {cartItems} = useShoppingCart()
+    const { cartItems , cartQuantity} = useShoppingCart()
     const [products, setProducts] = useState<IProducts[]>([]);
-    const {cartQuantity} = useShoppingCart()
 
 
     async function fetchProducts() {
@@ -35,11 +34,16 @@ export default function Cart(): JSX.Element {
         }
     })()
 
-console.log(res)
+    let totalPrice: number = 0;
+    (function total(){
+        for ( let i = 0; i < res.length;i++ ){
+            totalPrice += res[i].price
+        }
+    })()
 
     return (
         <div className="w-full h-full flex  flex-col">
-            <p>Total: {res.map(el => (el.price * cartQuantity).toFixed(2))} </p>
+            <p className="ml-2 font-bold"><span className="text-red-500">Total:</span> {totalPrice} $</p>
             {res.map(el => <CartItem id={el.id} title={el.title} image={el.image} price={el.price} key={el.id} category={el.category}/>)}
         </div>
     );

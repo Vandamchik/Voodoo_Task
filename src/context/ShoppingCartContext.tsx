@@ -17,6 +17,25 @@ export  function ShoppingCartProvider( {children} : ShoppingCartProviderProps) {
         return cartItems.find(item => item.id === id)?.quantity || 0
     }
 
+
+    function addToCart(id: number) {
+        setCartItems(currentItems => {
+            if(currentItems.find(item => item.id === id) == null) {
+                return [...currentItems, { id, quantity: 1}]
+            }
+            else {
+                return currentItems.map(item => {
+                    if(item.id === id) {
+                        return {...item}
+                    }
+                    else {
+                        return item
+                    }
+                })
+            }
+        })
+    }
+
     function increaseCart(id: number) {
         setCartItems(currentItems => {
             if(currentItems.find(item => item.id === id) == null) {
@@ -71,6 +90,7 @@ export  function ShoppingCartProvider( {children} : ShoppingCartProviderProps) {
         <ShoppingCartContext.Provider value={{
             getItemQuantity,
             increaseCart,
+            addToCart,
             decreaseCart,
             removeFromCart,
             cartItems,

@@ -1,4 +1,4 @@
-import {ReactNode} from "react";
+import React, {ReactNode} from "react";
 
 export interface IProducts {
     id?: number
@@ -23,6 +23,7 @@ export interface ShoppingCartProviderProps  {
 
 export interface  ShoppingCartContextProps {
     getItemQuantity: (id: number) => number
+    addToCart: (id: number) => void
     increaseCart: (id: number) => void
     decreaseCart: (id: number) => void
     removeFromCart: (id: number) => void
@@ -34,5 +35,6 @@ export interface  ShoppingCartContextProps {
 
 export interface CartItemProps {
     id: number,
-    quantity: number
+    quantity: number,
+    price?: number
 }

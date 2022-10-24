@@ -30,9 +30,15 @@ export default function SecondPage() {
 
 
     return (
-        <div className="flex flex-col border-2 border-gray-400 border-solid rounded-3xl ">
-            {products.map(el => <ProductBonusOption key={el.id} productData={el}>{el.id}</ProductBonusOption>)}
-        </div>
+        <>
+        { error && <p className="text-center text-red-900">{error}</p> }
+            { loading ? <p className="text-center font-bold text-black-900">loading..</p>
+                :
+                <div className="flex flex-col items-center justify-center">
+                    {products.map(el => <ProductBonusOption key={el.id} productData={el}>{el.id}</ProductBonusOption>)}
+                </div>
+            }
+        </>
     );
 };
 

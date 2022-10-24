@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {IProducts} from "../moduls/modules";
-import {Simulate} from "react-dom/test-utils";
-import {useShoppingCart} from "../context/ShoppingCartContext";
+import React, { useState }  from 'react';
+import { IProducts } from "../moduls/modules";
+import { useShoppingCart } from "../context/ShoppingCartContext";
+import { formatCurrency } from "../hooks/formatCurrency";
 
 
 interface ProductProps {
@@ -10,21 +10,19 @@ interface ProductProps {
 }
 
 export default function ProductBonusOption({productData}: ProductProps) {
+    const { removeFromCart, addToCart } = useShoppingCart()
     const [inputCheck, setInputCheck] = useState<boolean>(false)
-    const {getItemQuantity, increaseCart, decreaseCart, removeFromCart} = useShoppingCart()
-    function checkHandler() {
-        setInputCheck((prev) => !prev)
-        if(!inputCheck) increaseCart(productData.id!)
-        else {decreaseCart(productData.id!)}
-    }
-
     const today:Date = new Date()
     const deliveryDate:any = today.setDate(today.getDate() + 2)
-    // console.log(deliveryDate.toString("MM/dd/yyyy"))
 
+    function checkHandler() {
+        setInputCheck((prev) => !prev)
+        if(!inputCheck) addToCart(productData.id!)
+        else {removeFromCart(productData.id!)}
+    }
 
     return (
-        <div className="m-[20px] ">
+        <div className="m-[20px] w-[400px] border-2 border-gray-400 border-solid p-3 rounded-xl flex flex-col justify-center items-center">
             <p className="mb-2"><span className="font-bold">Title: </span>{productData.title}</p>
             <input
                 type="checkbox"
@@ -32,11 +30,14 @@ export default function ProductBonusOption({productData}: ProductProps) {
                 onChange={checkHandler}
             />
             {inputCheck &&
-                <div>
-                    <img src={productData.image} className="w-1/6" alt={productData.title}/>
-                    <p><span className="font-bold">Description: </span>{productData.description}</p>
-                    <p><span className="font-bold">Price: </span>{productData.price}$</p>
-                    <p>{deliveryDate}</p>
+                <div className="p-3 mb-2">
+                    <img src={productData.image} className="w-1/3" alt={productData.title}/>
+                    <p className="m-2"><span className="font-bold">Description: </span>{productData.description}</p>
+                    <p className="m-2"><span className="font-bold">Price: </span>{formatCurrency(productData.price!)}</p>
+                    <p>
+                        <span className="text-red-500 font-bold">Estimate Delivery date </span>
+                        {new Date(deliveryDate).toDateString()}
+                    </p>
                 </div>
             }
         </div>
