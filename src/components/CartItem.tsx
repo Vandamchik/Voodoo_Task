@@ -1,15 +1,12 @@
 import React from 'react';
-import {useShoppingCart} from "../context/ShoppingCartContext";
-import {IProducts} from "../moduls/modules";
-import {formatCurrency} from "../hooks/formatCurrency";
+import { useShoppingCart } from "../context/ShoppingCartContext";
+import { IProducts } from "../moduls/modules";
+import { formatCurrency } from "../hooks/formatCurrency";
 
 
 export default function CartItem( props: IProducts):JSX.Element {
     const {removeFromCart} = useShoppingCart()
     const {image, title, price, category, id } = props
-
-
-
 
     return (
         <div

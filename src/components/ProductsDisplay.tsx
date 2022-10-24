@@ -1,12 +1,12 @@
 import React from 'react';
 import { ProductProps } from "../moduls/modules";
 import { useShoppingCart } from "../context/ShoppingCartContext";
-import {formatCurrency} from "../hooks/formatCurrency";
+import { formatCurrency } from "../hooks/formatCurrency";
 
 
 
 export default function ProductsDisplay({productData}: ProductProps): JSX.Element {
-    const { increaseCart, decreaseCart, cartQuantity } = useShoppingCart()
+    const { removeFromCart,addToCart } = useShoppingCart()
 
 
     return (
@@ -20,14 +20,13 @@ export default function ProductsDisplay({productData}: ProductProps): JSX.Elemen
                     <div className="flex w-[200px] items-center mr-5 flex-col justify-center">
                         <div className="flex items-center justify-evenly w-full">
                             <button
-                                className="border-2 border-solid rounded-full w-[50px] justify-center items-center"
-                                onClick={() => increaseCart(productData.id!)}
-                            >+</button>
-                           <p><span className="font-bold">{cartQuantity}</span> in cart</p>
+                                className="border-2 border-solid rounded-full w-[70px] justify-center items-center"
+                                onClick={() => addToCart(productData.id!)}
+                            >Add</button>
                             <button
-                                onClick={() => decreaseCart(productData.id!)}
-                                className="border-2 border-solid rounded-full w-[50px] justify-center items-center"
-                            >-</button>
+                                onClick={() => removeFromCart(productData.id!)}
+                                className="border-2 border-solid rounded-full w-[70px] justify-center items-center"
+                            >Remove</button>
                         </div>
                     </div>
                 </div>

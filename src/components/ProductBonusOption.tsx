@@ -18,7 +18,7 @@ export default function ProductBonusOption({productData}: ProductProps) {
     function checkHandler() {
         setInputCheck((prev) => !prev)
         if(!inputCheck) addToCart(productData.id!)
-        else {removeFromCart(productData.id!)}
+        else removeFromCart(productData.id!)
     }
 
     return (

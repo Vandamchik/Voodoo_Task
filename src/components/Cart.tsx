@@ -5,7 +5,7 @@ import {IProducts} from "../moduls/modules";
 import axios from "axios";
 
 export default function Cart(): JSX.Element {
-    const { cartItems , cartQuantity} = useShoppingCart()
+    const { cartItems } = useShoppingCart()
     const [products, setProducts] = useState<IProducts[]>([]);
 
 

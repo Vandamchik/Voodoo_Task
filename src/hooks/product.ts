@@ -26,9 +26,6 @@ export default function useProduct() {
         fetchProducts()
     }, [])
 
-
-
-
     return { products, error, loading }
 
 }

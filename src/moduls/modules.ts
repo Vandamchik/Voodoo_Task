@@ -24,17 +24,12 @@ export interface ShoppingCartProviderProps  {
 export interface  ShoppingCartContextProps {
     getItemQuantity: (id: number) => number
     addToCart: (id: number) => void
-    increaseCart: (id: number) => void
-    decreaseCart: (id: number) => void
     removeFromCart: (id: number) => void
     cartItems: CartItemProps[]
     cartQuantity: number
-    openCart: () => void
-    closeCart: () => void
 }
 
 export interface CartItemProps {
     id: number,
     quantity: number,
-    price?: number
 }
