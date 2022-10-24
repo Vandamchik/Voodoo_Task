@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import axios, {AxiosError} from "axios";
-import {IProducts} from "../moduls/modules";
+import React, { useEffect, useState } from 'react';
+import axios, { AxiosError } from "axios";
+import { IProducts } from "../moduls/modules";
 import ProductBonusOption from "../components/ProductBonusOption";
 
 export default function SecondPage() {
@@ -12,9 +12,9 @@ export default function SecondPage() {
         try {
             setError('')
             setLoading(true)
-            const response = await axios.get<IProducts[]>('https://fakestoreapi.com/products?limit=5')
+            const response = await axios.get<IProducts[]>('https://fakestoreapi.com/products?limit=7')
+            response.data.splice(0, 2)
             setProducts(response.data)
-            console.log(response.data)
             setLoading(false)
         } catch (e: unknown) {
             const error = e as AxiosError;

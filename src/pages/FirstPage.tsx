@@ -1,74 +1,65 @@
-import React, {useEffect, useState} from 'react';
-import {IProducts} from '../moduls/modules'
-import axios, {AxiosError} from "axios";
+import React, { useState } from 'react';
+import { IProducts } from '../moduls/modules'
+import axios from "axios";
 import ProductsDisplay from "../components/ProductsDisplay";
+import useProduct from "../hooks/product";
 
 
 export default function FirstPage(): JSX.Element {
-    const [products, setProducts] = useState<IProducts[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string>("");
-    const [activeBtn, setActiveBtn] = useState<boolean>(false)
-    const btnActiveClass = activeBtn ? " h-[20px] border-red-900" :  " h-[25px] border-green-900";
-    const btn2ActiveClass = activeBtn ? "h-[25px] border-green-900"  :  " h-[20px] border-red-900";
-    const btnClass = ['bg-white w-[30px]  border-2 border-solid rounded-full mr-2' , btnActiveClass]
-    const btn2Class = ['bg-black w-[30px]  border-2 border-solid rounded-full mr-2' , btn2ActiveClass]
-
-    async function fetchProducts() {
-        try {
-            setError('')
-            setLoading(true)
-            const response = await axios.get<IProducts[]>('https://fakestoreapi.com/products?limit=1')
-            setProducts(response.data)
-            setActiveBtn(true)
-            setLoading(false)
-        } catch (e: unknown) {
-            const error = e as AxiosError;
-            setLoading(false)
-            setError(error.message)
-        }
-    }
-
-    useEffect(() => {
-        fetchProducts()
-    }, [])
+    const { products, error, loading, } = useProduct()
+    const [productsIssue, setProductsIssue] = useState<IProducts[]>([])
+    const [changeColorBtn, setChangeColorBtn] = useState(false)
+    const [whiteColor, setWhiteColor ] = useState<boolean>(false)
+    const [blackColor, setBlackColor ] = useState<boolean>(true)
+    const btnWhiteActiveClass = whiteColor ? " h-[30px]  border-green-900" :  " h-[30px] border-red-900";
+    const btnBlackActiveClass = blackColor ? "h-[30px] border-green-900"  : " h-[30px] border-red-900";
+    const btnWhiteClass = ['bg-white w-[30px]  border-2 border-solid rounded-full mr-2' , btnWhiteActiveClass]
+    const btnBlackClass = ['bg-black w-[30px]  border-2 border-solid rounded-full mr-2' , btnBlackActiveClass]
 
 
     async function whiteBtnHandler() {
         const response = await axios.get<IProducts[]>('https://fakestoreapi.com/products?limit=2')
         const productIssues = [];
-        setActiveBtn(false)
+        setWhiteColor(true)
+        setBlackColor(false)
         productIssues.push(response.data[1])
-        setProducts(productIssues)
+        setProductsIssue(productIssues)
+        setChangeColorBtn(true )
     }
 
     async function blackBtnHandler() {
-        const response = await axios.get<IProducts[]>('https://fakestoreapi.com/products?limit=2')
-        const productIssues = [];
-        setActiveBtn(true)
-        productIssues.push(response.data[0])
-        setProducts(productIssues)
+        const response = await axios.get<IProducts[]>('https://fakestoreapi.com/products?limit=1')
+        const blackColorData= [];
+        setBlackColor(true)
+        setWhiteColor(false)
+        blackColorData.push(response.data[0])
+        setProductsIssue(blackColorData)
+        setChangeColorBtn(false )
     }
 
 
     return (
         <>
-            {error && <p className="text-center text-red-900">{error}</p>}
-            { loading ?
-                <p className="text-center font-bold">Loading...</p>
-            :
-                <div className="w-[800px] h-full mt-10 border-2 border-gray-400 border-solid rounded-3xl flex flex-col mx-auto">
-                    { products.map(el => <ProductsDisplay productData={el} key={el.id} />) }
-                    <div className="flex items-center h-[35px] ">
+            { error && <p className="text-center text-red-900">{error}</p> }
+            { loading ? <p className="text-center font-bold text-black-900">loading..</p>
+                :
+                <div
+                    className="w-[800px] h-full mt-10 border-2 border-gray-400 border-solid rounded-3xl flex flex-col mx-auto">
+                    { changeColorBtn ?
+                        productsIssue.map(el => <ProductsDisplay productData={el} key={el.id}/>)
+                        :
+                        products.map(el => <ProductsDisplay productData={el} key={el.id}/>)
+                    }
+                    <div className="flex items-center h-[45px] ">
                         <div className="flex ml-[165px]">
                             <p className="font-bold mr-2">Select color</p>
                             <button
-                                className={btnClass.join(' ')}
-                                onClick={whiteBtnHandler}
+                                className={btnBlackClass.join(' ')}
+                                onClick={blackBtnHandler}
                             ></button>
                             <button
-                                className={btn2Class.join(' ')}
-                                onClick={blackBtnHandler}
+                                className={btnWhiteClass.join(' ')}
+                                onClick={whiteBtnHandler}
                             ></button>
                         </div>
                     </div>
